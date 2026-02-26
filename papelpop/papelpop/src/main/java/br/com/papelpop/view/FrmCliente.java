@@ -2,6 +2,7 @@ package br.com.papelpop.view;
 
 import br.com.papelpop.dao.ClienteDAO;
 import br.com.papelpop.model.Cliente;
+import br.com.papelpop.util.IconeSistema;
 import br.com.papelpop.util.TemaPapelPop;
 import br.com.papelpop.view.components.RoundedButton;
 
@@ -20,6 +21,7 @@ public class FrmCliente extends JFrame {
 
     public FrmCliente() {
         setTitle("Cadastro de Clientes");
+        IconeSistema.aplicarIcone(this);
         setSize(600, 380);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());

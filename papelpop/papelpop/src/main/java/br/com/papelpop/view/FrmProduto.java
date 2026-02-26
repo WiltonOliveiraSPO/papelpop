@@ -2,6 +2,7 @@ package br.com.papelpop.view;
 
 import br.com.papelpop.dao.ProdutoDAO;
 import br.com.papelpop.model.Produto;
+import br.com.papelpop.util.IconeSistema;
 import br.com.papelpop.util.TemaPapelPop;
 import br.com.papelpop.view.components.RoundedButton;
 
@@ -22,6 +23,7 @@ public class FrmProduto extends JFrame {
 
     public FrmProduto() {
         setTitle("Cadastro de Produtos");
+        IconeSistema.aplicarIcone(this);
         setSize(600, 320);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());

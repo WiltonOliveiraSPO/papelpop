@@ -4,6 +4,7 @@ import br.com.papelpop.dao.EstoqueDAO;
 import br.com.papelpop.dao.ProdutoDAO;
 import br.com.papelpop.model.Estoque;
 import br.com.papelpop.model.Produto;
+import br.com.papelpop.util.IconeSistema;
 import br.com.papelpop.util.TemaPapelPop;
 import br.com.papelpop.view.components.RoundedButton;
 
@@ -25,6 +26,7 @@ public class FrmEstoque extends JFrame {
 
     public FrmEstoque() {
         setTitle("Controle de Estoque");
+        IconeSistema.aplicarIcone(this);
         setSize(600, 350);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());

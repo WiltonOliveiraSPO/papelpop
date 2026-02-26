@@ -1,6 +1,7 @@
 package br.com.papelpop.view;
 
 import br.com.papelpop.util.ConexaoSQLite;
+import br.com.papelpop.util.IconeSistema;
 import br.com.papelpop.util.TemaPapelPop;
 
 import com.toedter.calendar.JDateChooser;
@@ -9,6 +10,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.Font;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -32,6 +34,7 @@ public class FrmRelatorioVendas extends JFrame {
 
     public FrmRelatorioVendas() {
         setTitle("Relatórios de Vendas");
+        IconeSistema.aplicarIcone(this);
         setSize(900, 500);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -208,6 +211,23 @@ public class FrmRelatorioVendas extends JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
+    
+    private ImageIcon redimensionarIcone(String caminho) {
+
+        ImageIcon icon = new ImageIcon(caminho);
+        Image img = icon.getImage();
+
+        int largura = (int) (icon.getIconWidth() * 0.2);
+        int altura = (int) (icon.getIconHeight() * 0.2);
+
+        Image imgRedimensionada = img.getScaledInstance(
+                largura,
+                altura,
+                Image.SCALE_SMOOTH
+        );
+
+        return new ImageIcon(imgRedimensionada);
+    }
 
     // ==============================
     // EXPORTAR EXCEL
@@ -219,14 +239,102 @@ public class FrmRelatorioVendas extends JFrame {
 
             Sheet sheet = wb.createSheet("Relatorio");
 
+            int linhaAtual = 0;
+
+            // ==============================
+            // INSERIR LOGOMARCA
+            // ==============================
+
+            FileInputStream fis = new FileInputStream("C:/papelpop/icons/papelpop.jpg");
+            byte[] bytes = fis.readAllBytes();
+            fis.close();
+
+            int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+            CreationHelper helper = wb.getCreationHelper();
+            Drawing<?> drawing = sheet.createDrawingPatriarch();
+            ClientAnchor anchor = helper.createClientAnchor();
+
+            anchor.setCol1(0);
+            anchor.setRow1(0);
+            anchor.setCol2(2);
+            anchor.setRow2(4);
+
+            Picture pict = drawing.createPicture(anchor, pictureIdx);
+            pict.resize(0.5); // reduz tamanho
+
+            // ==============================
+            // TOTAL GERAL (ao lado da logo)
+            // ==============================
+
+            double totalGeral = 0;
+
             for (int i = 0; i < tabela.getRowCount(); i++) {
-                Row row = sheet.createRow(i);
+                totalGeral += Double.parseDouble(
+                        tabela.getValueAt(i, 2).toString()
+                );
+            }
+
+            Row rowInfo = sheet.createRow(1);
+            Cell cellTotal = rowInfo.createCell(3);
+            cellTotal.setCellValue("TOTAL GERAL:");
+
+            Cell cellValor = rowInfo.createCell(4);
+            cellValor.setCellValue(totalGeral);
+
+            CellStyle estiloMoeda = wb.createCellStyle();
+            DataFormat format = wb.createDataFormat();
+            estiloMoeda.setDataFormat(format.getFormat("R$ #,##0.00"));
+            cellValor.setCellStyle(estiloMoeda);
+
+            linhaAtual = 6;
+
+            // ==============================
+            // CABEÇALHO DA TABELA
+            // ==============================
+
+            Row header = sheet.createRow(linhaAtual++);
+
+            for (int j = 0; j < tabela.getColumnCount(); j++) {
+                header.createCell(j).setCellValue(
+                        tabela.getColumnName(j)
+                );
+            }
+
+            // ==============================
+            // DADOS
+            // ==============================
+
+            for (int i = 0; i < tabela.getRowCount(); i++) {
+
+                Row row = sheet.createRow(linhaAtual++);
 
                 for (int j = 0; j < tabela.getColumnCount(); j++) {
-                    row.createCell(j).setCellValue(
-                            tabela.getValueAt(i, j).toString()
-                    );
+
+                    Cell cell = row.createCell(j);
+
+                    Object valor = tabela.getValueAt(i, j);
+
+                    if (valor instanceof Number) {
+                        cell.setCellValue(((Number) valor).doubleValue());
+                    } else {
+                        cell.setCellValue(valor.toString());
+                    }
                 }
+            }
+
+            // ==============================
+            // TOTAL FINAL NO RODAPÉ
+            // ==============================
+
+            Row totalRow = sheet.createRow(linhaAtual + 1);
+            totalRow.createCell(1).setCellValue("TOTAL:");
+            Cell totalCell = totalRow.createCell(2);
+            totalCell.setCellValue(totalGeral);
+            totalCell.setCellStyle(estiloMoeda);
+
+            // Ajustar largura automática
+            for (int i = 0; i < tabela.getColumnCount(); i++) {
+                sheet.autoSizeColumn(i);
             }
 
             FileOutputStream out = new FileOutputStream("RelatorioVendas.xlsx");
@@ -239,18 +347,4 @@ public class FrmRelatorioVendas extends JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
-    
-    private ImageIcon redimensionarIcone(String caminho) {
-
-        ImageIcon icon = new ImageIcon(caminho);
-        Image img = icon.getImage();
-
-        int largura = (int) (icon.getIconWidth() * 0.2);
-        int altura = (int) (icon.getIconHeight() * 0.2);
-
-        Image imgRedimensionada = img.getScaledInstance(largura, altura, Image.SCALE_SMOOTH);
-
-        return new ImageIcon(imgRedimensionada);
-    }
-
 }

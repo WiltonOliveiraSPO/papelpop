@@ -3,6 +3,7 @@ package br.com.papelpop.view;
 import br.com.papelpop.dao.*;
 
 import br.com.papelpop.model.*;
+import br.com.papelpop.util.IconeSistema;
 import br.com.papelpop.util.TemaPapelPop;
 import br.com.papelpop.view.components.RoundedButton;
 
@@ -32,6 +33,7 @@ public class FrmVenda extends JFrame {
 
     public FrmVenda() {
         setTitle("Venda");
+        IconeSistema.aplicarIcone(this);
         setSize(800, 500);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());

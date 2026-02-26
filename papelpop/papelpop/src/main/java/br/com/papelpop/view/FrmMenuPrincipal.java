@@ -1,8 +1,9 @@
 package br.com.papelpop.view;
 
 import br.com.papelpop.util.TemaPapelPop;
-import br.com.papelpop.view.components.RoundedButton;
 
+import br.com.papelpop.view.components.RoundedButton;
+import br.com.papelpop.util.IconeSistema;
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,6 +18,9 @@ public class FrmMenuPrincipal extends JFrame {
 
     public FrmMenuPrincipal() {
         setTitle("PapelPop - Sistema de Papelaria");
+
+        IconeSistema.aplicarIcone(this); // 👈 AQUI
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);

@@ -2,6 +2,7 @@ package br.com.papelpop.view;
 
 import br.com.papelpop.dao.UsuarioDAO;
 import br.com.papelpop.model.Usuario;
+import br.com.papelpop.util.IconeSistema;
 import br.com.papelpop.util.TemaPapelPop;
 import br.com.papelpop.view.components.RoundedButton;
 
@@ -23,6 +24,7 @@ public class FrmUsuario extends JFrame {
 
     public FrmUsuario() {
         setTitle("Cadastro de Usuários");
+        IconeSistema.aplicarIcone(this);
         setSize(500, 350);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());

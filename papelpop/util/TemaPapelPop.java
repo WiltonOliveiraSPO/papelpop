@@ -3,7 +3,7 @@ package br.com.papelpop.util;
 import java.awt.Color;
 
 /**
- * Representa a classe TemaPapelPop e centraliza suas responsabilidades no sistema PapelPop.
+ * Representa a classe TemaPapelPop e traz as cores em tema azul no sistema PapelPop.
  * Data de criacao: 09/04/2026
  * Autor: Wilton Almeida Oliveira
  */

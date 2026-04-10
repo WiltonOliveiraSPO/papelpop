@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Representa a classe ConexaoSQLite e centraliza suas responsabilidades no sistema PapelPop.
+ * Representa a classe ConexaoSQLite que é a conexão do sistema com SQLite no sistema PapelPop.
  * Data de criacao: 09/04/2026
  * Autor: Wilton Almeida Oliveira
  */
